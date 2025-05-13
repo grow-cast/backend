@@ -12,7 +12,7 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "secret_jwt_key"; //보안상 환경변수로넣어야 하는데 일단
+    private static final String SECRET_KEY = "secret_jwt_keyfskdjfksdfjlsjdlfjslkdjflsjdlfkjslkdjfjshdsljdflskjdfl"; //보안상 환경변수로넣어야 하는데 일단
 
     private static final long ACCESS_EXPIRATION_TIME = 1000 * 60 * 60 * 24;       //24시간
     private static final long REFRESH_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7;  //7일
