@@ -1,8 +1,8 @@
-package com.growcast.growcast.user;
+package com.growcast.growcast.user.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 import lombok.*;
 
 @Entity
@@ -13,26 +13,21 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
-    private Long user_id;
+    private Long userId;  //필드명 변경
 
     @Column(name = "google_id", nullable = false)
-    private Long google_id;
+    private String googleId;  //필드명 변경
 
     @Column(name = "nickname", nullable = false, length = 225)
     private String nickname;
 
-    @Column(name = "regionCode", nullable = false)
-    private Integer regionCode;
+    @Column(name = "regionCode", columnDefinition = "TEXT", nullable = false)
+    private String regionCode;
 
     @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
-
-    /* 위 로컬데이터타입으로 생성할 때 오류가 발생하면 이 코드 사용하면 됨
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt = new Date();
-    */
 }

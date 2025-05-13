@@ -1,10 +1,10 @@
 package com.growcast.growcast.cropsRecommend;
 
 import com.growcast.growcast.climate.Climate;
-import com.growcast.growcast.user.User;
+import com.growcast.growcast.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 import lombok.*;
 
 @Entity

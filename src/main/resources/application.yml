@@ -1,0 +1,31 @@
+server:
+  port: 3030
+  address: 0.0.0.0
+
+spring:
+  application:
+    name: growcast
+
+  datasource:
+    url: jdbc:mysql://34.64.167.81:3306/growcast?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: yeonju
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+google:
+  client-ids:
+    - "YOUR_GOOGLE_CLIENT_ID"
+    - "407408718192.apps.googleusercontent.com"  #OAuth Playground
+
+logging:
+  level:
+    org.springframework.security: INFO
