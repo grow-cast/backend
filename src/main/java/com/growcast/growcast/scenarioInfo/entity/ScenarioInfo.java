@@ -1,17 +1,16 @@
-package com.growcast.growcast.scenarioInfo;
+package com.growcast.growcast.scenarioInfo.entity;
 
-import com.growcast.growcast.predictedPests.RiskLevel;
-import com.growcast.growcast.user.User;
+import com.growcast.growcast.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@Table(name = "scenarioInfo")
+@Table(name = "scenario_info")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScenarioInfo {

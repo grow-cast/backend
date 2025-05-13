@@ -1,10 +1,10 @@
-package com.growcast.growcast.comment;
+package com.growcast.growcast.comment.entity;
 
-import com.growcast.growcast.dashboard.Dashboard;
-import com.growcast.growcast.user.User;
+import com.growcast.growcast.dashboard.entity.Dashboard;
+import com.growcast.growcast.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 import lombok.*;
 
 @Entity

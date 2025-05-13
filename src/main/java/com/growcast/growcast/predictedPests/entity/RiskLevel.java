@@ -1,4 +1,4 @@
-package com.growcast.growcast.predictedPests;
+package com.growcast.growcast.predictedPests.entity;
 
 public enum RiskLevel {
     위험,

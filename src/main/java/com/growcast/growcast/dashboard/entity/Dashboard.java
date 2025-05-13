@@ -1,13 +1,12 @@
-package com.growcast.growcast.dashboard;
+package com.growcast.growcast.dashboard.entity;
 
-import com.growcast.growcast.comment.Comment;
-import com.growcast.growcast.grownCrops.GrownCrops;
-import com.growcast.growcast.user.User;
+import com.growcast.growcast.grownCrops.entity.GrownCrops;
+import com.growcast.growcast.user.entity.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 import lombok.*;
 
 @Entity
@@ -30,7 +29,7 @@ public class Dashboard {
     private String picture; //이미지 경로(gcs 사용 예정)
 
     @Column(name = "cropName", nullable = true, length = 225)
-    private String cropName;
+    private String cropName; //작물 이름
 
     @Column(name="waterTime", nullable = true)
     private Integer waterTime; //물 준 시간

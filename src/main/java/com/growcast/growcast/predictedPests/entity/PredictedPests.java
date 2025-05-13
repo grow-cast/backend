@@ -1,19 +1,17 @@
-package com.growcast.growcast.predictedPests;
+package com.growcast.growcast.predictedPests.entity;
 
-import com.growcast.growcast.grownCrops.GrownCrops;
-import com.growcast.growcast.user.User;
+import com.growcast.growcast.user.entity.User;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@Table(name = "predictedPests")
+@Table(name = "predicted_pests")
 @AllArgsConstructor
 @NoArgsConstructor
 public class PredictedPests {

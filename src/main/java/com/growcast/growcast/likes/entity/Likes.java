@@ -1,36 +1,36 @@
-package com.growcast.growcast.grownCrops;
+package com.growcast.growcast.likes.entity;
 
-import com.growcast.growcast.user.User;
+import com.growcast.growcast.dashboard.entity.Dashboard;
+import com.growcast.growcast.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@Table(name = "grownCrops")
+@Table(name = "likes")
 @AllArgsConstructor
 @NoArgsConstructor
-public class GrownCrops {
+public class Likes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "gc_id", nullable = false)
-    private Long gc_id;
+    @Column(name = "likes_id", nullable = false)
+    private Long likes_id;
 
-    @Column(name = "name", nullable = false, length = 225)
-    private String name;
-
-    @Column(name = "nickname", nullable = true, length = 225)
-    private String nickname;
-
-    @Column(name="picture", columnDefinition = "TEXT", nullable = false)
-    private String picture; //이미지 경로(gcs 사용 예정)
+    @Builder.Default
+    @Column(name="likeCount", nullable = false)
+    private Integer likeCount = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "dashboard_id", nullable = false)
+    private Dashboard dashboard;
 
     @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;

@@ -1,17 +1,17 @@
-package com.growcast.growcast.cropsRecommend;
+package com.growcast.growcast.cropsRecommend.entity;
 
-import com.growcast.growcast.climate.Climate;
-import com.growcast.growcast.user.User;
+import com.growcast.growcast.climate.entity.Climate;
+import com.growcast.growcast.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@Table(name = "cropsRecommend")
+@Table(name = "crops_recommend")
 @AllArgsConstructor
 @NoArgsConstructor
 public class CropsRecommend {
