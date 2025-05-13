@@ -29,6 +29,9 @@ public class Dashboard {
     @Column(name="picture", columnDefinition = "TEXT", nullable = false)
     private String picture; //이미지 경로(gcs 사용 예정)
 
+    @Column(name = "cropName", nullable = true, length = 225)
+    private String cropName;
+
     @Column(name="waterTime", nullable = true)
     private Integer waterTime; //물 준 시간
 
@@ -74,7 +77,7 @@ public class Dashboard {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "gc_id", nullable = false)
+    @JoinColumn(name = "gc_id", nullable = true)
     private GrownCrops grownCrops;
 
     @Column(name="createdAt", nullable = false)
