@@ -24,8 +24,8 @@ public class User {
     @Column(name = "nickname", nullable = false, length = 225)
     private String nickname;
 
-    @Column(name = "regionCode", nullable = false)
-    private Integer regionCode;
+    @Column(name = "regionCode", columnDefinition = "TEXT", nullable = false)
+    private String regionCode;
 
     @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
