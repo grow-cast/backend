@@ -24,7 +24,10 @@ public class ScenarioInfo {
     private Integer regionCode;
 
     @Column(name="summary", columnDefinition = "TEXT", nullable = false)
-    private String summary; //댓글 내용
+    private String summary;
+
+    @Column(name="recommendationNote", columnDefinition = "TEXT", nullable = true)
+    private String recommendationNote;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
