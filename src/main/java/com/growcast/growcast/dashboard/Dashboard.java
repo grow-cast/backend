@@ -1,6 +1,5 @@
 package com.growcast.growcast.dashboard;
 
-import com.growcast.growcast.climate.Climate;
 import com.growcast.growcast.comment.Comment;
 import com.growcast.growcast.grownCrops.GrownCrops;
 import com.growcast.growcast.user.User;
@@ -68,7 +67,7 @@ public class Dashboard {
     private String harvesState; //수확 상태
 
     @Column(name = "StorageMethod", nullable = true, length = 225)
-    private String StorageMethod; //저장 방법
+    private String storageMethod; //저장 방법
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
