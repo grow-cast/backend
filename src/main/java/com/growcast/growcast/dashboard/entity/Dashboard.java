@@ -1,6 +1,6 @@
-package com.growcast.growcast.dashboard;
+package com.growcast.growcast.dashboard.entity;
 
-import com.growcast.growcast.grownCrops.GrownCrops;
+import com.growcast.growcast.grownCrops.entity.GrownCrops;
 import com.growcast.growcast.user.entity.User;
 import jakarta.persistence.*;
 
@@ -28,8 +28,11 @@ public class Dashboard {
     @Column(name="picture", columnDefinition = "TEXT", nullable = false)
     private String picture; //이미지 경로(gcs 사용 예정)
 
-    @Column(name="waterTime", nullable = true)
-    private Integer waterTime; //물 준 시간
+    @Column(name = "cropName", nullable = true, length = 225)
+    private String cropName; //작물 이름
+
+    @Column(name="waterTime", nullable = true, length = 225)
+    private String waterTime; //물 준 시간
 
     @Column(name="waterAmount", nullable = true)
     private Integer waterAmount; //물 양
@@ -37,8 +40,8 @@ public class Dashboard {
     @Column(name = "nutritionalSupplements", nullable = true, length = 225)
     private String nutritionalSupplements; //영양제
 
-    @Column(name="nutritionalSupplementsTime", nullable = true)
-    private Integer nutritionalSupplementsTime; //영양제 준 시간
+    @Column(name="nutritionalSupplementsTime", nullable = true, length = 225)
+    private String nutritionalSupplementsTime; //영양제 준 시간
 
     @Column(name="nutritionalSupplementsAmount", nullable = true)
     private Integer nutritionalSupplementsAmount; //영양제 양
@@ -66,22 +69,16 @@ public class Dashboard {
     private String harvesState; //수확 상태
 
     @Column(name = "StorageMethod", nullable = true, length = 225)
-    private String StorageMethod; //저장 방법
+    private String storageMethod; //저장 방법
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "gc_id", nullable = false)
+    @JoinColumn(name = "gc_id", nullable = true)
     private GrownCrops grownCrops;
 
-    @Column(name="createdAt", nullable = false)
+    @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
-
-    /* 위 로컬데이터타입으로 생성할 때 오류가 발생하면 이 코드 사용하면 됨
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt = new Date();
-    */
 }

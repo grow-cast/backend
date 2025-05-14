@@ -1,6 +1,6 @@
 package com.growcast.growcast.like;
 
-import com.growcast.growcast.dashboard.Dashboard;
+import com.growcast.growcast.dashboard.entity.Dashboard;
 import com.growcast.growcast.user.entity.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

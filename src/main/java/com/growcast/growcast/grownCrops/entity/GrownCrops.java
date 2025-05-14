@@ -1,7 +1,9 @@
-package com.growcast.growcast.grownCrops;
+package com.growcast.growcast.grownCrops.entity;
 
 import com.growcast.growcast.user.entity.User;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.*;
@@ -10,7 +12,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-@Table(name = "grownCrops")
+@Table(name = "grown_crops")
 @AllArgsConstructor
 @NoArgsConstructor
 public class GrownCrops {
@@ -25,8 +27,14 @@ public class GrownCrops {
     @Column(name = "nickname", nullable = true, length = 225)
     private String nickname;
 
-    @Column(name="picture", columnDefinition = "TEXT", nullable = false)
+    @Column(name="picture", columnDefinition = "TEXT", nullable = true)
     private String picture; //이미지 경로(gcs 사용 예정)
+
+    @Column(name="plantingDate", nullable = true)
+    private LocalDate plantingDate; //수확일
+
+    @Column(name = "expectedHarvestDate", nullable = true)
+    private LocalDate expectedHarvestDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
