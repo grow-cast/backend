@@ -1,4 +1,4 @@
-package com.growcast.growcast.dashboard.controller;
+package com.growcast.growcast.dashboard.Controller;
 
 import com.growcast.growcast.dashboard.dto.DashboardMonthlyListDTO;
 import jakarta.servlet.http.HttpServletRequest;

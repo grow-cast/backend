@@ -21,11 +21,20 @@ spring:
         format_sql: true
     database-platform: org.hibernate.dialect.MySQLDialect
 
+  cloud:
+    gcp:
+      credentials:
+        location: classpath:key/growcast-key.json
+
 google:
   client-ids:
     - "YOUR_GOOGLE_CLIENT_ID"
-    - "407408718192.apps.googleusercontent.com"  #OAuth Playground
+    - "407408718192.apps.googleusercontent.com"
 
 logging:
   level:
     org.springframework.security: INFO
+
+gcs:
+  bucket:
+    name: growcast-bucket
