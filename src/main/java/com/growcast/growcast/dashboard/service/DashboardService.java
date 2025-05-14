@@ -73,7 +73,7 @@ public class DashboardService {
 
         //작물 이름이 사전에 등록되어 있었는지 여부 검사
         String cropName = dashboardCreateRequestDTO.getCropName();
-        Optional<Long> grownCropsIdOptional = grownCropsRepository.findByGrownCropsNameAndUserId(user_id, cropName);
+        Optional<Long> grownCropsIdOptional = grownCropsRepository.findGcIdByUserIdAndCropName(user_id, cropName);
 
         if (grownCropsIdOptional.isPresent()) {
             Long gcId = (Long) grownCropsIdOptional.get();
