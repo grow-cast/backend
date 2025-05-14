@@ -9,9 +9,9 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor  //기본 생성자 (필수)
 @AllArgsConstructor //모든 필드를 받는 생성자 자동 생성
-public class DashboardCreateRequestDTO {
+public class DashboardDetailDTO {
     private String dashboardTitle; //대시보드 제목
-    private MultipartFile picture; //이미지 경로(gcs 사용 예정)
+    private String picture; //이미지 경로(gcs 사용 예정)
     private String cropName; //작물 이름
     private String waterTime; //물 준 시간
     private Integer waterAmount; //물 양
@@ -26,5 +26,4 @@ public class DashboardCreateRequestDTO {
     private Integer harvesAmount; //수확량
     private String harvesState; //수확 상태
     private String storageMethod; //저장 방법
-    private Long gcId; //작물 아이디 -> 드롭다운에서 선택했을 경우에만 저장
 }

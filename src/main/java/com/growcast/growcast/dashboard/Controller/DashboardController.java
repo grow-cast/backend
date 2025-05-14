@@ -1,11 +1,17 @@
 package com.growcast.growcast.dashboard.controller;
 
 import com.growcast.growcast.dashboard.dto.DashboardMonthlyListDTO;
+import com.growcast.growcast.dashboard.dto.DashboardDetailDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.http.MediaType;  // MediaType import
+import org.springframework.web.multipart.MultipartFile;  // MultipartFile import
+import java.io.IOException;  // IOException import
+
 
 import com.growcast.growcast.dashboard.service.DashboardService;
 import com.growcast.growcast.dashboard.dto.DashboardCreateRequestDTO;
@@ -23,8 +29,8 @@ public class DashboardController {
 
     //출력 값이 다름 프론트쪽에 물어보고 맞춰서 수정
     //대시보드 작성 api
-    @PostMapping
-    public ResponseEntity<?> createDashboard(@RequestHeader("Authorization") String token, @RequestBody DashboardCreateRequestDTO dashboardCreateRequestDTO) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createDashboard(@RequestHeader("Authorization") String token, @ModelAttribute DashboardCreateRequestDTO dashboardCreateRequestDTO) throws IOException{
         //Long user_id = 1L; //구글 소셜 로그인 구현 후 JWT 사용해 userId 추출해서 사용하는 걸로 변경 예정
 
         if (token == null || !token.startsWith("Bearer ")) {
@@ -39,6 +45,25 @@ public class DashboardController {
         response.put("message", "대시보드 작성 성공");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    //대시보드 상세보기
+    @GetMapping("/{dashboardId}")
+    public ResponseEntity<?> getDashboardList(@RequestHeader("Authorization") String token, @PathVariable("dashboardId") Long dashboardId) {
+        //Long user_id = 1L; //구글 소셜 로그인 구현 후 JWT 사용해 userId 추출해서 사용하는 걸로 변경 예정
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).body(Map.of("error", "Unauthorized"));
+        }
+        String accessToken = token.substring(7);
+
+        DashboardDetailDTO dashboardDetailDTO = dashboardService.getDashboardDetail(accessToken, dashboardId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("statusCode", 200);
+        response.put("message", "캘린더 대시보드 목록 리스트 반환 성공");
+        response.put("data", dashboardDetailDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     //대시보드 삭제 api

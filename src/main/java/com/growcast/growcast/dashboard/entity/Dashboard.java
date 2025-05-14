@@ -20,7 +20,7 @@ public class Dashboard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dashboard_id", nullable = false)
-    private long dashboard_id;
+    private long dashboardId;
 
     @Column(name = "dashboardTitle", nullable = false, length = 225)
     private String dashboardTitle; //대시보드 제목

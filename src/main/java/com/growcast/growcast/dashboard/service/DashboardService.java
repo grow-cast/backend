@@ -2,6 +2,7 @@ package com.growcast.growcast.dashboard.service;
 
 import com.growcast.growcast.dashboard.dto.DashboardCreateRequestDTO;
 import com.growcast.growcast.dashboard.dto.DashboardMonthlyListDTO;
+import com.growcast.growcast.dashboard.dto.DashboardDetailDTO;
 import com.growcast.growcast.dashboard.entity.Dashboard;
 import com.growcast.growcast.dashboard.repository.DashboardRepository;
 import com.growcast.growcast.grownCrops.entity.GrownCrops;
@@ -12,11 +13,20 @@ import com.growcast.growcast.user.repository.UserRepository;
 import com.growcast.growcast.config.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.multipart.MultipartFile;  // MultipartFile import
+import java.io.IOException;  // IOException import
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,8 +39,31 @@ public class DashboardService {
     private final GrownCropsService grownCropsService;
     private final JwtUtil jwtUtil;
 
+    @Autowired
+    private final Storage storage;
+
+    @Value("${gcs.bucket.name}")
+    private String bucketName;
+
+    // GCS에 이미지 업로드
+    public String uploadImageToGCS(MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            throw new IOException("파일이 비어있습니다.");
+        }
+
+        String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+        BlobId blobId = BlobId.of(bucketName, "dashboard/" + fileName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+                .setContentType(file.getContentType())
+                .build();
+
+        storage.create(blobInfo, file.getBytes());
+
+        return "https://storage.googleapis.com/" + bucketName + "/dashboard/" + fileName;
+    }
+
     //대시보드 등록
-    public void createDashboard(String accessToken, DashboardCreateRequestDTO dashboardCreateRequestDTO) {
+    public void createDashboard(String accessToken, DashboardCreateRequestDTO dashboardCreateRequestDTO) throws IOException  {
         Long user_id = jwtUtil.getUserIdFromToken(accessToken);
 
         User user = userRepository.findById(user_id)
@@ -47,10 +80,17 @@ public class DashboardService {
             grownCrops = grownCropsRepository.findById(gcId).orElse(null);
         }
 
+
+        // 이미지 업로드 후 URL 받기
+        String imageUrl = null;
+        if (dashboardCreateRequestDTO.getPicture() != null) {
+            imageUrl = uploadImageToGCS(dashboardCreateRequestDTO.getPicture());
+        }
+
         //대시보드 저장
         Dashboard dashboard = Dashboard.builder()
                 .dashboardTitle(dashboardCreateRequestDTO.getDashboardTitle())
-                .picture(dashboardCreateRequestDTO.getPicture())
+                .picture(imageUrl)
                 .cropName(cropName)
                 .waterTime(dashboardCreateRequestDTO.getWaterTime())
                 .waterAmount(dashboardCreateRequestDTO.getWaterAmount())
@@ -72,7 +112,36 @@ public class DashboardService {
 
         dashboardRepository.save(dashboard);
     }
-    //대시보드 수정
+
+    //대시보드 상세보기
+    public DashboardDetailDTO getDashboardDetail(String accessToken, Long dashboardId) {
+        Long user_id = jwtUtil.getUserIdFromToken(accessToken);
+
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다"));
+
+        Dashboard dashboard = dashboardRepository.findById(dashboardId)
+                .orElseThrow(() -> new IllegalArgumentException("대시보드가 존재하지 않습니다"));
+
+        return new DashboardDetailDTO (
+                dashboard.getDashboardTitle(),
+                dashboard.getPicture(),
+                dashboard.getCropName(),
+                dashboard.getWaterTime(),
+                dashboard.getWaterAmount(),
+                dashboard.getNutritionalSupplements(),
+                dashboard.getNutritionalSupplementsTime(),
+                dashboard.getNutritionalSupplementsAmount(),
+                dashboard.getUsedPesticide(),
+                dashboard.getCropGrowthStatus(),
+                dashboard.getNumber(),
+                dashboard.getWorkHistory(),
+                dashboard.getHarvesMonth(),
+                dashboard.getHarvesAmount(),
+                dashboard.getHarvesState(),
+                dashboard.getStorageMethod()
+        );
+    }
 
     //대시보드 삭제
     public void deleteDashboard(String accessToken, Long dashboardId) {
@@ -84,6 +153,7 @@ public class DashboardService {
         dashboardRepository.deleteById(dashboardId);
     }
 
+    //대시보드 수정
 
     //달력 ui에 대시보드 목록 가져옴
     public List<DashboardMonthlyListDTO> getMonthlyDashboards(String accessToken, YearMonth yearMonth) {
@@ -108,14 +178,13 @@ public class DashboardService {
         LocalDateTime startTime = start.atStartOfDay();
         LocalDateTime endTime = end.atTime(23, 59, 59);
 
-        return dashboardRepository.findAllDashboardByUserIdAndCreatedAtBetween(user_id, startTime, endTime)
+        return dashboardRepository.findAllByUser_UserIdAndCreatedAtBetween(user_id, startTime, endTime)
                 .stream()
                 .map(dashboard -> new DashboardMonthlyListDTO(
-                        dashboard.getDashboard_id(),
+                        dashboard.getDashboardId(),
                         dashboard.getDashboardTitle(),
                         dashboard.getCreatedAt().toLocalDate()
                 ))
                 .collect(Collectors.toList());
-
     }
 }
