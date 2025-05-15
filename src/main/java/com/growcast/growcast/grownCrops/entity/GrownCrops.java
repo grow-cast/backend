@@ -19,7 +19,7 @@ public class GrownCrops {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "gc_id", nullable = false)
-    private Long gc_id;
+    private Long gcid;
 
     @Column(name = "name", nullable = false, length = 225)
     private String name;
