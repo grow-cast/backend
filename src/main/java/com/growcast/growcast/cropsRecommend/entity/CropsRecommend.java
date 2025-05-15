@@ -1,4 +1,4 @@
-package com.growcast.growcast.cropsRecommend;
+package com.growcast.growcast.cropsRecommend.entity;
 
 import com.growcast.growcast.climate.Climate;
 import com.growcast.growcast.user.entity.User;

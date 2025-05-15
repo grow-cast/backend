@@ -28,7 +28,10 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/google", "/auth/signup", "/auth/refresh", "/dashboard/**").permitAll()
+                        .requestMatchers(
+                                "/auth/google", "/auth/signup", "/auth/refresh",
+                                "/dashboard/**", "/cropsRecommend" //작물 추천 추가
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);

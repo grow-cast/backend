@@ -28,7 +28,7 @@ spring:
 
 google:
   client-ids:
-    - "YOUR_GOOGLE_CLIENT_ID"
+    - "134487039534-4i53cp0ug52igee97crb3mf8klkr0p3o.apps.googleusercontent.com"
     - "407408718192.apps.googleusercontent.com"
 
 logging:
