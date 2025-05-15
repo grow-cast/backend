@@ -39,3 +39,4 @@ out/
 #설정파일 무시
 src/main/resources/.env.properties
 src/main/resources/growcast-458911-f1863eb09b83.json
+src/main/resources/key/
