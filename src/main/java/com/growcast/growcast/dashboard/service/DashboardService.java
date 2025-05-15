@@ -3,6 +3,7 @@ package com.growcast.growcast.dashboard.service;
 import com.growcast.growcast.dashboard.dto.DashboardCreateRequestDTO;
 import com.growcast.growcast.dashboard.dto.DashboardMonthlyListDTO;
 import com.growcast.growcast.dashboard.dto.DashboardDetailDTO;
+import com.growcast.growcast.dashboard.dto.DashboardUpdateDTO;
 import com.growcast.growcast.dashboard.entity.Dashboard;
 import com.growcast.growcast.dashboard.repository.DashboardRepository;
 import com.growcast.growcast.grownCrops.entity.GrownCrops;
@@ -150,10 +151,50 @@ public class DashboardService {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다"));
 
+        Dashboard dashboard = dashboardRepository.findById(dashboardId)
+                .orElseThrow(() -> new IllegalArgumentException("대시보드가 존재하지 않습니다"));
+
         dashboardRepository.deleteById(dashboardId);
     }
 
     //대시보드 수정
+    public void updateDashboard(String accessToken, Long dashboardId, DashboardUpdateDTO dashboardUpdateDTO) throws IOException {
+        Long user_id = jwtUtil.getUserIdFromToken(accessToken);
+
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다"));
+
+        Dashboard dashboard = dashboardRepository.findById(dashboardId)
+                .orElseThrow(() -> new IllegalArgumentException("대시보드가 존재하지 않습니다"));
+
+
+        //이미지 경로 업데이트
+        String imageUrl = dashboard.getPicture();
+
+        if (dashboardUpdateDTO.getPicture() != null) {
+            imageUrl = uploadImageToGCS(dashboardUpdateDTO.getPicture());
+        }
+
+        //수정사항 저장
+        if (dashboardUpdateDTO.getDashboardTitle() != null) dashboard.setDashboardTitle(dashboardUpdateDTO.getDashboardTitle());
+        if (dashboardUpdateDTO.getPicture() != null) dashboard.setPicture(imageUrl);
+        if (dashboardUpdateDTO.getCropName() != null) dashboard.setCropName(dashboardUpdateDTO.getCropName());
+        if (dashboardUpdateDTO.getWaterTime() != null) dashboard.setWaterTime(dashboardUpdateDTO.getWaterTime());
+        if (dashboardUpdateDTO.getWaterAmount() != null) dashboard.setWaterAmount(dashboardUpdateDTO.getWaterAmount());
+        if (dashboardUpdateDTO.getNutritionalSupplements() != null) dashboard.setNutritionalSupplements(dashboardUpdateDTO.getNutritionalSupplements());
+        if (dashboardUpdateDTO.getNutritionalSupplementsTime() != null) dashboard.setNutritionalSupplementsTime(dashboardUpdateDTO.getNutritionalSupplementsTime());
+        if (dashboardUpdateDTO.getNutritionalSupplementsAmount() != null) dashboard.setNutritionalSupplementsAmount(dashboardUpdateDTO.getNutritionalSupplementsAmount());
+        if (dashboardUpdateDTO.getUsedPesticide() != null) dashboard.setUsedPesticide(dashboardUpdateDTO.getUsedPesticide());
+        if (dashboardUpdateDTO.getCropGrowthStatus() != null) dashboard.setCropGrowthStatus(dashboardUpdateDTO.getCropGrowthStatus());
+        if (dashboardUpdateDTO.getNumber() != null) dashboard.setNumber(dashboardUpdateDTO.getNumber());
+        if (dashboardUpdateDTO.getWorkHistory() != null) dashboard.setWorkHistory(dashboardUpdateDTO.getWorkHistory());
+        if (dashboardUpdateDTO.getHarvestMonth() != null) dashboard.setHarvesMonth(dashboardUpdateDTO.getHarvestMonth());
+        if (dashboardUpdateDTO.getHarvestAmount() != null) dashboard.setHarvesAmount(dashboardUpdateDTO.getHarvestAmount());
+        if (dashboardUpdateDTO.getHarvestState() != null) dashboard.setHarvesState(dashboardUpdateDTO.getHarvestState());
+        if (dashboardUpdateDTO.getStorageMethod() != null) dashboard.setStorageMethod(dashboardUpdateDTO.getStorageMethod());
+
+        dashboardRepository.save(dashboard);
+    }
 
     //달력 ui에 대시보드 목록 가져옴
     public List<DashboardMonthlyListDTO> getMonthlyDashboards(String accessToken, YearMonth yearMonth) {

@@ -2,6 +2,7 @@ package com.growcast.growcast.dashboard.controller;
 
 import com.growcast.growcast.dashboard.dto.DashboardMonthlyListDTO;
 import com.growcast.growcast.dashboard.dto.DashboardDetailDTO;
+import com.growcast.growcast.dashboard.dto.DashboardUpdateDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -88,6 +89,29 @@ public class DashboardController {
 
         //리다이렉트 할 URL 반환 (이전 페이지로 리다이렉트)
         return ResponseEntity.status(HttpStatus.FOUND).header("Location", referer).body(response);
+    }
+
+    //대시보드 수정
+    @PutMapping("/{dashboardId}")
+    public ResponseEntity<?> updateDashboard(@RequestHeader("Authorization") String token, @PathVariable("dashboardId") Long dashboardId, @ModelAttribute DashboardUpdateDTO dashboardUpdateDTO) throws IOException{
+        //Long user_id = 1L; //구글 소셜 로그인 구현 후 JWT 사용해 userId 추출해서 사용하는 걸로 변경 예정
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).body(Map.of("error", "Unauthorized"));
+        }
+        String accessToken = token.substring(7);
+
+        try {
+            dashboardService.updateDashboard(accessToken, dashboardId, dashboardUpdateDTO);
+            //return ResponseEntity.ok(Map.of("message", "대시보드 수정 성공"));
+            Map<String, Object> response = new HashMap<>();
+
+            response.put("statusCode", 201);
+            response.put("message", "대시보드 수정 성공");
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
     //달력데 대시보드 리스트 출력
