@@ -18,7 +18,7 @@ public class CropsRecommend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cr_id", nullable = false)
-    private Long cr_id;
+    private Long crrid;
 
     @Column(nullable = false, length = 225)
     private String recommendedCropName;
